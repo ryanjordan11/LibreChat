@@ -1,0 +1,4 @@
+# Thin Railway image: official LibreChat + OneHub Chat config (includes Groq)
+FROM ghcr.io/danny-avila/librechat-dev-api:latest
+COPY librechat.railway.yaml /app/librechat.yaml
+ENV HOST=0.0.0.0

@@ -60,12 +60,17 @@ function AuthLayout({
     <div className="relative flex min-h-screen flex-col bg-white dark:bg-gray-900">
       <Banner />
       <BlinkAnimation active={isFetching}>
-        <div className="mt-6 h-10 w-full bg-cover">
+        <div className="mt-8 flex w-full flex-col items-center gap-3 px-4">
           <img
-            src="assets/logo.svg"
-            className="h-full w-full object-contain"
-            alt={localize('com_ui_logo', { 0: startupConfig?.appTitle ?? 'LibreChat' })}
+            src="/assets/onehub-logo.png?v=4"
+            width={96}
+            height={96}
+            className="h-24 w-24 rounded-2xl bg-white object-contain p-2 shadow-md"
+            alt={localize('com_ui_logo', { 0: startupConfig?.appTitle ?? 'OneHub Chat' })}
           />
+          <p className="text-center text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">
+            {startupConfig?.appTitle ?? 'OneHub Chat'}
+          </p>
         </div>
       </BlinkAnimation>
       <DisplayError />

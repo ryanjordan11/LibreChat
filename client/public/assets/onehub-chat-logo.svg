@@ -1,0 +1,8 @@
+<svg width="320" height="72" viewBox="0 0 320 72" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Simple mark -->
+  <rect x="4" y="8" width="56" height="56" rx="14" fill="#8B46D7"/>
+  <path d="M20 44 V28 H28 C34 28 38 31 38 36 C38 41 34 44 28 44 H20 Z M26 39 H28 C30.5 39 32 37.8 32 36 C32 34.2 30.5 33 28 33 H26 V39 Z" fill="white"/>
+  <path d="M42 28 H48 V44 H42 V28 Z" fill="white" opacity="0.9"/>
+  <!-- Wordmark: uses currentColor so CSS can theme it -->
+  <text x="76" y="46" font-family="system-ui, -apple-system, Segoe UI, sans-serif" font-size="28" font-weight="700" fill="#111827">OneHub Chat</text>
+</svg>
