@@ -358,27 +358,6 @@ actions:
 #     - 'host.docker.internal:8080'
 #     - '127.0.0.1:8080'
 
-# OneHub (Open Design) local MCP bridge — chat can call OneHub tools
-# Requires OneHub daemon running (default http://127.0.0.1:7456)
-mcpServers:
-  onehub:
-    type: stdio
-    command: /Users/ryanjordan/.nvm/versions/node/v24.18.0/bin/node
-    args:
-      - /Users/ryanjordan/IdeaProjects/onehub14/apps/daemon/dist/cli.js
-      - mcp
-      - --daemon-url
-      - http://127.0.0.1:7456
-    env:
-      OD_DATA_DIR: /Users/ryanjordan/IdeaProjects/onehub14/.od
-    timeout: 120000
-    iconPath: /Users/ryanjordan/librenew/client/public/assets/logo.png
-    chatMenu: true
-    serverInstructions: |
-      OneHub / Open Design is the local design app. Use these tools when the user
-      asks about projects, files, artifacts, or creating design content in OneHub.
-      Prefer get_active_context first, then list_projects / get_file / create_artifact.
-
 # Definition of custom endpoints
 endpoints:
   # assistants:
@@ -518,7 +497,7 @@ endpoints:
     # auto-fetch uses the OpenAI `/models` convention and is not used for this provider.
     - name: 'Claude-Compatible'
       provider: 'anthropic'
-      apiKey: '${ANTHROPIC_API_KEY}'
+      apiKey: 'user_provided'
       baseURL: 'https://api.anthropic.com'
       # (optional) headers forwarded on every request (e.g. for a reverse proxy);
       # values support the same placeholders as built-in endpoints.
@@ -556,7 +535,7 @@ endpoints:
     - name: 'Mistral' # Unique name for the endpoint
       # For `apiKey` and `baseURL`, you can use environment variables that you define.
       # recommended environment variables:
-      apiKey: '${MISTRAL_API_KEY}'
+      apiKey: 'user_provided'
       baseURL: 'https://api.mistral.ai/v1'
 
       # Models configuration
@@ -598,7 +577,7 @@ endpoints:
     - name: 'OpenRouter'
       # For `apiKey` and `baseURL`, you can use environment variables that you define.
       # recommended environment variables:
-      apiKey: '${OPENROUTER_KEY}'
+      apiKey: 'user_provided'
       baseURL: 'https://openrouter.ai/api/v1'
       headers:
         x-librechat-body-parentmessageid: '{{LIBRECHAT_BODY_PARENTMESSAGEID}}'
@@ -615,7 +594,7 @@ endpoints:
     - name: 'Helicone'
       # For `apiKey` and `baseURL`, you can use environment variables that you define.
       # recommended environment variables:
-      apiKey: '${HELICONE_KEY}'
+      apiKey: 'user_provided'
       baseURL: 'https://ai-gateway.helicone.ai'
       headers:
         x-librechat-body-parentmessageid: '{{LIBRECHAT_BODY_PARENTMESSAGEID}}'
