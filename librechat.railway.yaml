@@ -489,18 +489,11 @@ endpoints:
   #     #     deploymentName: claude-3-5-haiku@20241022  # Override for this model
 
   custom:
-    # Anthropic-compatible Example (native `/v1/messages` API)
-    # Set `provider: anthropic` to use the native Anthropic client instead of the
-    # default OpenAI-compatible one — for Anthropic itself or Anthropic-compatible
-    # gateways (e.g. AI gateways, OpenCode Zen). The `baseURL` must be the API root
-    # the Anthropic SDK appends `/v1/messages` to. List models explicitly: model
-    # auto-fetch uses the OpenAI `/models` convention and is not used for this provider.
+    # === Anthropic (native /v1/messages) ===
     - name: 'Claude-Compatible'
       provider: 'anthropic'
       apiKey: 'user_provided'
       baseURL: 'https://api.anthropic.com'
-      # (optional) headers forwarded on every request (e.g. for a reverse proxy);
-      # values support the same placeholders as built-in endpoints.
       headers:
         anthropic-version: '2023-06-01'
       models:
@@ -512,14 +505,90 @@ endpoints:
       titleModel: 'claude-sonnet-4-5'
       modelDisplayLabel: 'Claude (Compatible)'
 
-    # Groq Example
-    - name: 'groq'
-      # user_provided = you enter your key in the app Settings
+    # === Anyscale ===
+    - name: 'Anyscale'
+      apiKey: 'user_provided'
+      baseURL: 'https://api.endpoints.anyscale.com/v1'
+      models:
+        default: ['meta-llama/Llama-2-7b-chat-hf']
+        fetch: true
+      titleConvo: true
+      titleModel: 'meta-llama/Llama-2-7b-chat-hf'
+      summarize: false
+      summaryModel: 'meta-llama/Llama-2-7b-chat-hf'
+      modelDisplayLabel: 'Anyscale'
+
+    # === Cloudflare Workers AI ===
+    - name: 'Cloudflare Workers AI'
+      apiKey: 'user_provided'
+      baseURL: 'https://gateway.ai.cloudflare.com/v1/${CF_ACCOUNT_ID}/${CF_GATEWAY_ID}/workers-ai/v1'
+      models:
+        default:
+          - '@cf/google/gemma-3-12b-it'
+          - '@cf/meta/llama-4-scout-17b-16e-instruct'
+          - '@cf/qwen/qwq-32b'
+          - '@cf/qwen/qwen2.5-coder-32b-instruct'
+          - '@cf/deepseek-ai/deepseek-r1-distill-qwen-32b'
+          - '@cf/openai/gpt-oss-120b'
+        fetch: false
+      titleConvo: true
+      titleModel: '@cf/google/gemma-3-12b-it'
+      modelDisplayLabel: 'Cloudflare AI'
+
+    # === Cohere ===
+    - name: 'Cohere'
+      apiKey: 'user_provided'
+      baseURL: 'https://api.cohere.ai/v1'
+      models:
+        default: ['command-r', 'command-r-plus', 'command-light', 'command-light-nightly', 'command', 'command-nightly']
+        fetch: false
+      modelDisplayLabel: 'Cohere'
+      titleModel: 'command'
+      dropParams: ['stop', 'user', 'frequency_penalty', 'presence_penalty', 'temperature', 'top_p']
+
+    # === Databricks ===
+    - name: 'Databricks'
+      apiKey: 'user_provided'
+      baseURL: 'https://your_databricks_serving_endpoint_url_here_ending_with/invocations'
+      models:
+        default: ['databricks-meta-llama-3-70b-instruct']
+        fetch: false
+      titleConvo: true
+      titleModel: 'current_model'
+      directEndpoint: true
+      titleMessageRole: 'user'
+
+    # === Deepseek ===
+    - name: 'Deepseek'
+      apiKey: 'user_provided'
+      baseURL: 'https://api.deepseek.com/v1'
+      models:
+        default: ['deepseek-chat', 'deepseek-coder', 'deepseek-reasoner']
+        fetch: false
+      titleConvo: true
+      titleModel: 'deepseek-chat'
+      modelDisplayLabel: 'Deepseek'
+
+    # === Fireworks ===
+    - name: 'Fireworks'
+      apiKey: 'user_provided'
+      baseURL: 'https://api.fireworks.ai/inference/v1'
+      models:
+        default: ['accounts/fireworks/models/mixtral-8x7b-instruct']
+        fetch: true
+      titleConvo: true
+      titleModel: 'accounts/fireworks/models/llama-v2-7b-chat'
+      summarize: false
+      summaryModel: 'accounts/fireworks/models/llama-v2-7b-chat'
+      modelDisplayLabel: 'Fireworks'
+      dropParams: ['user']
+
+    # === Groq ===
+    - name: 'Groq'
       apiKey: 'user_provided'
       baseURL: 'https://api.groq.com/openai/v1/'
       models:
         default:
-          # Current Groq model IDs (old names like llama2-70b-4096 were removed)
           - 'llama-3.3-70b-versatile'
           - 'llama-3.1-8b-instant'
           - 'meta-llama/llama-4-scout-17b-16e-instruct'
@@ -529,87 +598,132 @@ endpoints:
         fetch: false
       titleConvo: true
       titleModel: 'llama-3.1-8b-instant'
-      modelDisplayLabel: 'groq'
+      modelDisplayLabel: 'Groq'
 
-    # Mistral AI Example
-    - name: 'Mistral' # Unique name for the endpoint
-      # For `apiKey` and `baseURL`, you can use environment variables that you define.
-      # recommended environment variables:
-      apiKey: 'user_provided'
-      baseURL: 'https://api.mistral.ai/v1'
-
-      # Models configuration
-      models:
-        # List of default models to use. At least one value is required.
-        default: ['mistral-tiny', 'mistral-small', 'mistral-medium']
-        # Fetch option: Set to true to fetch models from API.
-        fetch: true # Defaults to false.
-
-      # Optional configurations
-
-      # Title Conversation setting
-      titleConvo: true # Set to true to enable title conversation
-
-      # Title Method: Choose between "completion" or "functions".
-      # titleMethod: "completion"  # Defaults to "completion" if omitted.
-
-      # Title Model: Specify the model to use for titles.
-      titleModel: 'mistral-tiny' # Defaults to "gpt-3.5-turbo" if omitted.
-
-      # Summarize setting: Set to true to enable summarization.
-      # summarize: false
-
-      # Summary Model: Specify the model to use if summarization is enabled.
-      # summaryModel: "mistral-tiny"  # Defaults to "gpt-3.5-turbo" if omitted.
-
-      # The label displayed for the AI model in messages.
-      modelDisplayLabel: 'Mistral' # Default is "AI" when not set.
-
-      # Add additional parameters to the request. Default params will be overwritten.
-      # addParams:
-      # safe_prompt: true # This field is specific to Mistral AI: https://docs.mistral.ai/api/
-
-      # Drop Default params parameters from the request. See default params in guide linked below.
-      # NOTE: For Mistral, it is necessary to drop the following parameters or you will encounter a 422 Error:
-      dropParams: ['stop', 'user', 'frequency_penalty', 'presence_penalty']
-
-    # OpenRouter Example
-    - name: 'OpenRouter'
-      # For `apiKey` and `baseURL`, you can use environment variables that you define.
-      # recommended environment variables:
-      apiKey: 'user_provided'
-      baseURL: 'https://openrouter.ai/api/v1'
-      headers:
-        x-librechat-body-parentmessageid: '{{LIBRECHAT_BODY_PARENTMESSAGEID}}'
-      models:
-        default: ['meta-llama/llama-3-70b-instruct']
-        fetch: true
-      titleConvo: true
-      titleModel: 'meta-llama/llama-3-70b-instruct'
-      # Recommended: Drop the stop parameter from the request as Openrouter models use a variety of stop tokens.
-      dropParams: ['stop']
-      modelDisplayLabel: 'OpenRouter'
-
-    # Helicone Example
+    # === Helicone ===
     - name: 'Helicone'
-      # For `apiKey` and `baseURL`, you can use environment variables that you define.
-      # recommended environment variables:
       apiKey: 'user_provided'
       baseURL: 'https://ai-gateway.helicone.ai'
       headers:
         x-librechat-body-parentmessageid: '{{LIBRECHAT_BODY_PARENTMESSAGEID}}'
       models:
-        default:
-          ['gpt-4o-mini', 'claude-4.5-sonnet', 'llama-3.1-8b-instruct', 'gemini-2.5-flash-lite']
+        default: ['gpt-4o-mini', 'claude-4.5-sonnet', 'llama-3.1-8b-instruct', 'gemini-2.5-flash-lite']
         fetch: true
       titleConvo: true
       titleModel: 'gpt-4o-mini'
       modelDisplayLabel: 'Helicone'
-      iconURL: https://marketing-assets-helicone.s3.us-west-2.amazonaws.com/helicone.png
+      iconURL: 'https://marketing-assets-helicone.s3.us-west-2.amazonaws.com/helicone.png'
 
-    # Portkey AI Example
+    # === HuggingFace ===
+    - name: 'HuggingFace'
+      apiKey: 'user_provided'
+      baseURL: 'https://api-inference.huggingface.co/v1'
+      models:
+        default:
+          - 'codellama/CodeLlama-34b-Instruct-hf'
+          - 'google/gemma-1.1-2b-it'
+          - 'google/gemma-1.1-7b-it'
+          - 'HuggingFaceH4/starchat2-15b-v0.1'
+          - 'HuggingFaceH4/zephyr-7b-beta'
+          - 'meta-llama/Meta-Llama-3-8B-Instruct'
+          - 'microsoft/Phi-3-mini-4k-instruct'
+          - 'mistralai/Mistral-7B-Instruct-v0.1'
+          - 'mistralai/Mistral-7B-Instruct-v0.2'
+          - 'mistralai/Mixtral-8x7B-Instruct-v0.1'
+          - 'NousResearch/Nous-Hermes-2-Mixtral-8x7B-DPO'
+        fetch: true
+      titleConvo: true
+      titleModel: 'NousResearch/Nous-Hermes-2-Mixtral-8x7B-DPO'
+      dropParams: ['top_p']
+      modelDisplayLabel: 'HuggingFace'
+
+    # === Mistral AI ===
+    - name: 'Mistral'
+      apiKey: 'user_provided'
+      baseURL: 'https://api.mistral.ai/v1'
+      models:
+        default: ['mistral-tiny', 'mistral-small', 'mistral-medium', 'mistral-large-latest']
+        fetch: true
+      titleConvo: true
+      titleModel: 'mistral-tiny'
+      modelDisplayLabel: 'Mistral'
+      dropParams: ['stop', 'user', 'frequency_penalty', 'presence_penalty']
+
+    # === Apple MLX ===
+    - name: 'MLX'
+      apiKey: 'user_provided'
+      baseURL: 'http://localhost:8080/v1/'
+      models:
+        default: ['Meta-Llama-3-8B-Instruct-4bit']
+        fetch: false
+      titleConvo: true
+      titleModel: 'current_model'
+      summarize: false
+      summaryModel: 'current_model'
+      modelDisplayLabel: 'Apple MLX'
+      addParams:
+        max_tokens: 2000
+        'stop': ['<|eot_id|>']
+
+    # === Moonshot ===
+    - name: 'Moonshot'
+      apiKey: 'user_provided'
+      baseURL: 'https://api.moonshot.ai/v1'
+      models:
+        default: ['kimi-k2.5']
+        fetch: true
+      titleConvo: true
+      titleModel: 'current_model'
+      modelDisplayLabel: 'Moonshot'
+
+    # === Ollama ===
+    - name: 'Ollama'
+      apiKey: 'user_provided'
+      baseURL: 'http://localhost:11434/v1/'
+      models:
+        default: ['llama2', 'mistral', 'codellama', 'dolphin-mixtral', 'mistral-openorca']
+        fetch: true
+      titleConvo: true
+      titleModel: 'current_model'
+      summarize: false
+      summaryModel: 'current_model'
+      modelDisplayLabel: 'Ollama'
+
+    # === OpenRouter ===
+    - name: 'OpenRouter'
+      apiKey: 'user_provided'
+      baseURL: 'https://openrouter.ai/api/v1'
+      models:
+        default: ['meta-llama/llama-3-70b-instruct']
+        fetch: true
+      titleConvo: true
+      titleModel: 'meta-llama/llama-3-70b-instruct'
+      dropParams: ['stop']
+      modelDisplayLabel: 'OpenRouter'
+
+    # === Perplexity ===
+    - name: 'Perplexity'
+      apiKey: 'user_provided'
+      baseURL: 'https://api.perplexity.ai/'
+      models:
+        default:
+          - 'sonar-deep-research'
+          - 'sonar-reasoning-pro'
+          - 'sonar-reasoning'
+          - 'sonar-pro'
+          - 'sonar'
+          - 'r1-1776'
+        fetch: false
+      titleConvo: true
+      titleModel: 'sonar'
+      summarize: false
+      summaryModel: 'sonar'
+      dropParams: ['stop', 'frequency_penalty']
+      modelDisplayLabel: 'Perplexity'
+
+    # === Portkey AI ===
     - name: 'Portkey'
-      apiKey: 'dummy'
+      apiKey: 'user_provided'
       baseURL: 'https://api.portkey.ai/v1'
       headers:
         x-portkey-api-key: '${PORTKEY_API_KEY}'
@@ -622,7 +736,81 @@ endpoints:
       summarize: false
       summaryModel: 'current_model'
       modelDisplayLabel: 'Portkey'
-      iconURL: https://images.crunchbase.com/image/upload/c_pad,f_auto,q_auto:eco,dpr_1/rjqy7ghvjoiu4cd1xjbf
+      iconURL: 'https://images.crunchbase.com/image/upload/c_pad,f_auto,q_auto:eco,dpr_1/rjqy7ghvjoiu4cd1xjbf'
+
+    # === ShuttleAI ===
+    - name: 'ShuttleAI'
+      apiKey: 'user_provided'
+      baseURL: 'https://api.shuttleai.com/v1'
+      models:
+        default: ['shuttle-2.5', 'shuttle-2.5-mini']
+        fetch: true
+      titleConvo: true
+      titleModel: 'shuttle-2.5-mini'
+      summarize: false
+      summaryModel: 'shuttle-2.5-mini'
+      modelDisplayLabel: 'ShuttleAI'
+      dropParams: ['user', 'stop']
+
+    # === together.ai ===
+    - name: 'together.ai'
+      apiKey: 'user_provided'
+      baseURL: 'https://api.together.xyz'
+      models:
+        default:
+          - 'meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo'
+          - 'meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo'
+          - 'meta-llama/Meta-Llama-3.1-405B-Instruct-Turbo'
+          - 'mistralai/Mixtral-8x7B-Instruct-v0.1'
+          - 'google/gemma-2-27b-it'
+          - 'deepseek-ai/deepseek-coder-33b-instruct'
+          - 'Qwen/Qwen2-72B-Instruct'
+        fetch: false
+      titleConvo: true
+      titleModel: 'meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo'
+      summarize: false
+      summaryModel: 'meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo'
+      modelDisplayLabel: 'together.ai'
+
+    # === TrueFoundry ===
+    - name: 'TrueFoundry'
+      apiKey: 'user_provided'
+      baseURL: '${TRUEFOUNDRY_GATEWAY_URL}'
+      models:
+        default: ['openai-main/gpt-4o-mini', 'openai-main/gpt-4o']
+        fetch: true
+      titleConvo: true
+      titleModel: 'current_model'
+      summarize: false
+      summaryModel: 'current_model'
+      modelDisplayLabel: 'TrueFoundry'
+
+    # === vLLM ===
+    - name: 'vLLM'
+      apiKey: 'user_provided'
+      baseURL: 'http://127.0.0.1:8023/v1'
+      models:
+        default: ['google/gemma-3-27b-it']
+        fetch: true
+      titleConvo: true
+      titleModel: 'current_model'
+      titleMessageRole: 'user'
+      summarize: false
+      summaryModel: 'current_model'
+
+    # === xAI (Grok) ===
+    - name: 'xAI'
+      apiKey: 'user_provided'
+      baseURL: 'https://api.x.ai/v1'
+      models:
+        default: ['grok-beta']
+        fetch: false
+      titleConvo: true
+      titleMethod: 'completion'
+      titleModel: 'grok-beta'
+      summarize: false
+      summaryModel: 'grok-beta'
+      modelDisplayLabel: 'Grok'
 
   # AWS Bedrock Example
   # Note: Bedrock endpoint is configured via environment variables
