@@ -9,8 +9,11 @@
 # Specific patterns to ignore
 data-node
 meili_data*
-librechat*
+# Allow Railway config to be COPY'd into the image
+!librechat.railway.yaml
+!librechat.yaml
 Dockerfile*
+!Dockerfile.railway
 docs
 
 # Ignore all hidden files
