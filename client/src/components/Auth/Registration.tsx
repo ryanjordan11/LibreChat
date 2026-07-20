@@ -223,19 +223,25 @@ const Registration: React.FC = () => {
             )}
 
             <div className="mt-6">
-              <Button
-                disabled={
-                  Object.keys(errors).length > 0 ||
-                  isSubmitting ||
-                  (requireCaptcha && !turnstileToken)
-                }
-                type="submit"
-                aria-label="Submit registration"
-                variant="submit"
-                className="h-12 w-full rounded-2xl"
+              <div
+                className="h-12 w-full rounded-2xl p-[2px]"
+                style={{
+                  background: 'linear-gradient(135deg, #bf00ff, #8b5cf6, #3b82f6)',
+                }}
               >
-                {isSubmitting ? <Spinner /> : localize('com_auth_continue')}
-              </Button>
+                <Button
+                  disabled={
+                    Object.keys(errors).length > 0 ||
+                    isSubmitting ||
+                    (requireCaptcha && !turnstileToken)
+                  }
+                  type="submit"
+                  aria-label="Submit registration"
+                  className="h-full w-full rounded-[14px] bg-black text-white hover:bg-gray-900"
+                >
+                  {isSubmitting ? <Spinner /> : localize('com_auth_continue')}
+                </Button>
+              </div>
             </div>
           </form>
 
