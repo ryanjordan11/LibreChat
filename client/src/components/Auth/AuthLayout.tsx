@@ -66,10 +66,10 @@ function AuthLayout({
             width={96}
             height={96}
             className="h-24 w-24 rounded-2xl bg-white object-contain p-2 shadow-md"
-            alt={localize('com_ui_logo', { 0: startupConfig?.appTitle ?? 'OneHub Chat' })}
+            alt={localize('com_ui_logo', { 0: startupConfig?.appTitle ?? 'OneHub AI' })}
           />
           <p className="text-center text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">
-            {startupConfig?.appTitle ?? 'OneHub Chat'}
+            {startupConfig?.appTitle ?? 'OneHub AI'}
           </p>
         </div>
       </BlinkAnimation>

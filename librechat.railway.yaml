@@ -94,7 +94,7 @@ cache: true
 
 # Custom interface configuration
 interface:
-  customWelcome: 'Welcome to OneHub Chat. Tip: start an Agent and enable OneHub tools to work with your local OneHub projects.'
+  customWelcome: 'Welcome to OneHub AI. Tip: start an Agent and enable OneHub tools to work with your local OneHub projects.'
   # Enable/disable file search as a chatarea selection (default: true)
   # Note: This setting does not disable the Agents File Search Capability.
   # To disable the Agents Capability, see the Agents Endpoint configuration instead.
